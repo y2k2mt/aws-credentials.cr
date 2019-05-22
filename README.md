@@ -16,15 +16,14 @@ dependencies:
 
 ## Usage
 
-```crystal
-require "aws-credentials"
-```
-
 `Providers` resolves credentials in order from given` Provider`.
 In the example below, at first ,`Providers` resolves credentials from EnvProvider ('AWS_ACCESS_KEY_ID' and 'AWS_SECRET_ACCESS_KEY') and then resolves credentials from SharedCredentialFileProvider ('~/.aws/credentials').
 
 ```crystal
+require "aws-credentials"
+
 include Aws::Credentials
+
 provider = Providers.new ([
   EnvProvider.new,
   SharedCredentialFileProvider.new
@@ -35,8 +34,8 @@ credentials = provider.credentials
 ```
 
 Current `Provider` implementations are:
-- EnvProvider
-- SharedCredentialFileProvider
+- [EnvProvider](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html)
+- [SharedCredentialFileProvider](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 - [InstanceMetadataProvider](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)
 - [ContainerCredentialProvider](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html)
 
