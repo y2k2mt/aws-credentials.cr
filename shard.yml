@@ -1,0 +1,14 @@
+name: aws-credentials
+version: 0.1.0
+
+authors:
+  - y2k2mt <y2.k2mt@gmail.com>
+
+crystal: 0.27.0
+
+license: MIT
+
+development_dependencies:
+  ameba:
+    github: veelenga/ameba
+    version: ~> 0.9.1
