@@ -14,8 +14,10 @@ module Aws::Credentials
     end
 
     def credentials : Credentials
+      pp "aws-credentials: Resolving #{@resolved} : #{@current_time_provider}"
       if unresolved_or_expired @resolved, @current_time_provider
-        @resolved = resolve
+        pp "aws-credentials: Expired! Updating Credentials."
+        @resolved = resolve_credentials
       end
       @resolved.not_nil!
     end
@@ -28,7 +30,7 @@ module Aws::Credentials
       end
     end
 
-    private def resolve
+    private def resolve_credentials : Credentials
       response = HTTPClient.get URI.parse(lazy_resolve_url)
       case response.status_code
       when 200
