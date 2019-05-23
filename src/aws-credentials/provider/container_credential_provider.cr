@@ -1,5 +1,4 @@
-require "http/client"
-require "json"
+require "../http_client"
 
 module Aws::Credentials
   class ContainerCredentialProvider
@@ -30,10 +29,7 @@ module Aws::Credentials
     end
 
     private def resolve
-      url = URI.parse lazy_resolve_url
-      http = HTTP::Client.new url
-      http.connect_timeout = 5.seconds
-      response = http.get url.path.not_nil!
+      response = HTTPClient.get URI.parse(lazy_resolve_url)
       case response.status_code
       when 200
         begin

@@ -1,5 +1,4 @@
-require "http/client"
-require "json"
+require "../http_client"
 
 module Aws::Credentials
   class InstanceMetadataProvider
@@ -22,14 +21,11 @@ module Aws::Credentials
     end
 
     private def resolve
-      url = URI.parse @iam_security_credential_url
-      http = HTTP::Client.new url
-      http.connect_timeout = 5.seconds
-      response = http.get url.path.not_nil!
+      response = HTTPClient.get URI.parse(@iam_security_credential_url)
       case response.status_code
       when 200
         resolved_role_name = response.body.lines.first
-        response = http.get "#{@iam_security_credential_url}#{resolved_role_name}"
+        response = HTTPClient.get URI.parse("#{@iam_security_credential_url}#{resolved_role_name}")
         case response.status_code
         when 200
           begin
