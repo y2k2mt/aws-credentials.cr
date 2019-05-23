@@ -5,7 +5,7 @@ module ServerStub
     server = HTTP::Server.new do |context|
       fn.call context
     end
-    port = Random.rand 40000..65535
+    port = Random.rand 40_000..65_535
 
     server.bind_tcp port
     spawn do
