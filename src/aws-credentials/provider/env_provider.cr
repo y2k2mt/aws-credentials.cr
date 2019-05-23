@@ -9,7 +9,7 @@ module Aws::Credentials
         session_token: ENV["AWS_SESSION_TOKEN"]?,
       )
     rescue e
-      raise MissingCredentials.new
+      raise MissingCredentials.new e
     end
   end
 end
