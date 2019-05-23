@@ -40,6 +40,34 @@ module Aws::Credentials
       raise Exception.new "ERR"
     end
   end
+
+  class ProviderE
+    include Provider
+
+    setter current_time
+
+    def initialize(@current_time : Time)
+    end
+
+    def credentials
+      expiration = Time.parse_iso8601("2019-05-21T00:00:00Z")
+      if expiration.to_unix < @current_time.to_unix
+        Credentials.new(
+          access_key_id: "ACCESSKEY_E1",
+          secret_access_key: "SECRET_E1",
+          session_token: Random::Secure.hex(16),
+          expiration: expiration
+        )
+      else
+        Credentials.new(
+          access_key_id: "ACCESSKEY_E2",
+          secret_access_key: "SECRET_E2",
+          session_token: Random::Secure.hex(16),
+          expiration: expiration
+        )
+      end
+    end
+  end
 end
 
 module Aws::Credentials
@@ -59,7 +87,7 @@ module Aws::Credentials
         actual.access_key_id.should eq("ACCESSKEY_B")
         actual.secret_access_key.should eq("SECRET_B")
         reprovided = provider.credentials
-        actual.session_token.should eq(reprovided.session_token)
+        actual.should_not eq reprovided
       end
     end
     describe "credentials" do
@@ -74,6 +102,18 @@ module Aws::Credentials
         provider = Providers.new([ProviderC.new, ProviderC.new, ProviderD.new] of Provider)
         actual = provider.credentials?
         actual.should be_a MissingCredentials
+      end
+    end
+    describe "credentials" do
+      it "expired and refresh credentials" do
+        current = Time.parse_iso8601("2019-05-20T23:00:00Z")
+        e = ProviderE.new(current)
+        provider = Providers.new([e] of Provider)
+        current2 = Time.parse_iso8601("2019-05-21T01:00:00Z")
+        e.current_time = current2
+        actual = provider.credentials
+        reprovided = provider.credentials
+        actual.hash.should_not eq(reprovided.hash)
       end
     end
     describe "refresh" do

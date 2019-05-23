@@ -14,9 +14,7 @@ module Aws::Credentials
     end
 
     def credentials : Credentials
-      pp "aws-credentials: Resolving #{@resolved} : #{@current_time_provider}"
       if unresolved_or_expired @resolved, @current_time_provider
-        pp "aws-credentials: Expired! Updating Credentials."
         @resolved = resolve_credentials
       end
       @resolved.not_nil!
