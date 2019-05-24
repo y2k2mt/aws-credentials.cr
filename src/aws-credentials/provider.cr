@@ -20,16 +20,36 @@ module Aws::Credentials
 
   class Providers
     include Provider
+    include CredentialsWithExpiration
 
-    def initialize(@providers : Array(Provider))
+    @resolved : Credentials? = nil
+
+    def initialize(
+      @providers : Array(Provider),
+      @current_time_provider : Proc(Time) = ->{ Time.now }
+    )
     end
 
     def credentials : Credentials
-      resolve_credentials
+      if unresolved_or_expired @resolved, @current_time_provider
+        @resolved = resolve_credentials
+      end
+      @resolved.not_nil!
     end
 
     def credentials? : Credentials | MissingCredentials
-      resolve_credentials?
+      if unresolved_or_expired @resolved, @current_time_provider
+        reloaded = resolve_credentials?
+        case reloaded
+        when Credentials
+          @resolved = reloaded
+          @resolved.not_nil!
+        else
+          reloaded
+        end
+      else
+        @resolved.not_nil!
+      end
     end
 
     private def resolve_credentials : Credentials
@@ -55,6 +75,7 @@ module Aws::Credentials
 
     def refresh : Nil
       @providers.each { |p| p.refresh }
+      @resolved = nil
     end
   end
 end

@@ -106,13 +106,33 @@ module Aws::Credentials
     end
     describe "credentials" do
       it "expired and refresh credentials" do
-        current = Time.parse_iso8601("2019-05-20T23:00:00Z")
+        current = Time.parse_iso8601("2019-05-21T00:00:00Z")
         e = ProviderE.new(current)
-        provider = Providers.new([e] of Provider)
+        provider = Providers.new(
+          providers: [e] of Provider,
+          current_time_provider: ->{ Time.parse_iso8601("2019-05-20T23:00:00Z") },
+        )
+        actual = provider.credentials
         current2 = Time.parse_iso8601("2019-05-21T01:00:00Z")
         e.current_time = current2
-        actual = provider.credentials
         reprovided = provider.credentials
+        # NOT expired and expects same
+        actual.hash.should eq(reprovided.hash)
+      end
+    end
+    describe "credentials" do
+      it "expired and refresh credentials" do
+        current = Time.parse_iso8601("2019-05-20T23:00:00Z")
+        e = ProviderE.new(current)
+        provider = Providers.new(
+          providers: [e] of Provider,
+          current_time_provider: ->{ Time.parse_iso8601("2019-05-21T00:00:00Z") },
+        )
+        actual = provider.credentials
+        current2 = Time.parse_iso8601("2019-05-21T01:00:00Z")
+        e.current_time = current2
+        reprovided = provider.credentials
+        # Expired and refreshed
         actual.hash.should_not eq(reprovided.hash)
       end
     end

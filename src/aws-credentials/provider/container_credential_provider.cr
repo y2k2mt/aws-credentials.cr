@@ -5,19 +5,9 @@ module Aws::Credentials
     include Provider
     include CredentialsWithExpiration
 
-    @resolved : Credentials? = nil
-
     def initialize(
-      @container_credential_url : String? = nil,
-      @current_time_provider : Proc(Time) = ->{ Time.now }
+      @container_credential_url : String? = nil
     )
-    end
-
-    def credentials : Credentials
-      if unresolved_or_expired @resolved, @current_time_provider
-        @resolved = resolve_credentials
-      end
-      @resolved.not_nil!
     end
 
     private def lazy_resolve_url
@@ -28,7 +18,7 @@ module Aws::Credentials
       end
     end
 
-    private def resolve_credentials : Credentials
+    def credentials : Credentials
       response = HTTPClient.get URI.parse(lazy_resolve_url)
       case response.status_code
       when 200
@@ -42,12 +32,12 @@ module Aws::Credentials
               Time.parse_iso8601(ex)
             end
           )
-        rescue e
-          raise MissingCredentials.new("Failed to parse container credentials : #{e.message}")
         end
       else
         raise MissingCredentials.new("Failed to resolve credentials from container IAM role : #{response.status_code}:#{response.body}")
       end
+    rescue e
+      raise MissingCredentials.new e
     end
   end
 end
