@@ -3,7 +3,6 @@ require "../http_client"
 module Aws::Credentials
   class ContainerCredentialProvider
     include Provider
-    include CredentialsWithExpiration
 
     def initialize(
       @container_credential_url : String? = nil

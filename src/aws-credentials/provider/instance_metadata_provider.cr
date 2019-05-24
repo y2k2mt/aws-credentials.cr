@@ -3,7 +3,6 @@ require "../http_client"
 module Aws::Credentials
   class InstanceMetadataProvider
     include Provider
-    include CredentialsWithExpiration
 
     def initialize(
       @iam_security_credential_url : String = "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
