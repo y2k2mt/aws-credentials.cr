@@ -32,6 +32,7 @@ module Aws::Credentials
 
     def credentials : Credentials
       if unresolved_or_expired @resolved, @current_time_provider
+        refresh
         @resolved = resolve_credentials
       end
       @resolved.not_nil!
