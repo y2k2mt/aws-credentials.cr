@@ -9,7 +9,7 @@ module Aws::Credentials
       @role_session_name : String,
       @sts_client : STSClient,
       @duration_seconds : Time::Span? = nil,
-      @policy : JSON::Any? = nil,
+      @policy : JSON::Any? = nil
     )
     end
 
