@@ -77,7 +77,7 @@ module Aws::Credentials
         begin
           provider = SharedCredentialFileProvider.new(file_path: file.path, profile: "notavairable")
           actual = provider.credentials?
-          actual.should be_a MissingCredentials
+          actual.should be_nil
         ensure
           file.close
         end

@@ -2,15 +2,10 @@ module Aws::Credentials
   module Provider
     abstract def credentials : Credentials
 
-    def credentials? : Credentials | MissingCredentials
+    def credentials? : Credentials?
       credentials
     rescue e
-      case e
-      when MissingCredentials
-        e
-      else
-        MissingCredentials.new e
-      end
+      nil
     end
 
     def refresh : Nil
@@ -38,7 +33,7 @@ module Aws::Credentials
       @resolved.not_nil!
     end
 
-    def credentials? : Credentials | MissingCredentials
+    def credentials? : Credentials?
       if unresolved_or_expired @resolved, @current_time_provider
         reloaded = resolve_credentials?
         case reloaded
@@ -46,7 +41,7 @@ module Aws::Credentials
           @resolved = reloaded
           @resolved.not_nil!
         else
-          reloaded
+          nil
         end
       else
         @resolved.not_nil!
