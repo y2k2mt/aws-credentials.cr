@@ -44,5 +44,23 @@ module Aws::Credentials
         end
       end
     end
+    describe "credentials" do
+      it "credentials is not expired" do
+        current = Time.parse_iso8601 "2019-05-20T00:00:00Z"
+        expiration = Time.parse_iso8601("2019-05-20T22:00:00Z")
+        provider = SimpleCredentials.new(
+          access_key_id: "ACCESS_KEY",
+          secret_access_key: "SECRET_KEY",
+          session_token: "SESSION_KEY",
+          expiration: expiration,
+          current_time_provider: ->{ current },
+        )
+        actual = provider.credentials
+        actual.access_key_id.should eq "ACCESS_KEY"
+        actual.secret_access_key.should eq "SECRET_KEY"
+        actual.session_token.should eq "SESSION_KEY"
+        actual.expiration.should eq expiration
+      end
+    end
   end
 end
