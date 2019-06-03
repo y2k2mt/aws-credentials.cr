@@ -71,7 +71,7 @@ module Aws::Credentials
         else
           false
         end
-      }.try &.credentials? || MissingCredentials.new
+      }.try &.credentials? || MissingCredentials.new "No provider serves credential : #{@providers.map { |p| p.class.name }}"
     end
 
     def refresh : Nil

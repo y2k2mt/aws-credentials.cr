@@ -1,10 +1,10 @@
 name: aws-credentials
-version: 0.1.1
+version: 0.2.0
 
 authors:
   - y2k2mt <y2.k2mt@gmail.com>
 
-crystal: 0.27.0
+crystal: 0.28.0
 
 license: MIT
 
@@ -12,3 +12,6 @@ development_dependencies:
   ameba:
     github: veelenga/ameba
     version: ~> 0.9.1
+  awscr-signer:
+    github: taylorfinnell/awscr-signer
+    version: 0.5.4

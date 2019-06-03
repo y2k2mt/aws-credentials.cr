@@ -27,10 +27,10 @@ module Aws::Credentials
             end
           )
         else
-          raise MissingCredentials.new("Failed to resolve security credentials from IAM role : #{response.status_code}:#{response.body}")
+          raise "Failed to resolve security credentials from IAM role : #{response.status_code}:#{response.body}"
         end
       else
-        raise MissingCredentials.new("Failed to resolve IAM role name : #{response.status_code}:#{response.body}")
+        raise "Failed to resolve IAM role name : #{response.status_code}:#{response.body}"
       end
     rescue e
       raise MissingCredentials.new e
