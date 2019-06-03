@@ -16,7 +16,10 @@ module Aws::Credentials
             role_arn: "arn:aws:iam::123456789012:role/demo",
             role_session_name: "Bob",
             sts_client: STSClient.new(
-              contractor_credential_provider: Providers.new([EnvProvider.new, SharedCredentialFileProvider.new] of Provider).as(Provider),
+              contractor_credential_provider: Providers.new([SimpleCredentials.new(
+                access_key_id: "KEY_ID",
+                secret_access_key: "SECRET_KEY",
+              )] of Provider).as(Provider),
               signer: signer,
               endpoint: url,
             ),
