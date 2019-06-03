@@ -33,21 +33,6 @@ module Aws::Credentials
       @resolved.not_nil!
     end
 
-    def credentials? : Credentials?
-      if unresolved_or_expired @resolved, @current_time_provider
-        reloaded = resolve_credentials?
-        case reloaded
-        when Credentials
-          @resolved = reloaded
-          @resolved.not_nil!
-        else
-          nil
-        end
-      else
-        @resolved.not_nil!
-      end
-    end
-
     private def resolve_credentials : Credentials
       maybe_found = resolve_credentials?
       case maybe_found
@@ -60,12 +45,7 @@ module Aws::Credentials
 
     private def resolve_credentials? : Credentials | MissingCredentials
       @providers.find { |p|
-        case p.credentials?
-        when Credentials
-          true
-        else
-          false
-        end
+        p.credentials? ? true : false
       }.try &.credentials? || MissingCredentials.new "No provider serves credential : #{@providers.map { |p| p.class.name }}"
     end
 
