@@ -1,4 +1,5 @@
 require "../http_client"
+require "json"
 
 module Aws::Credentials
   class ContainerCredentialProvider
@@ -33,7 +34,7 @@ module Aws::Credentials
           )
         end
       else
-        raise MissingCredentials.new("Failed to resolve credentials from container IAM role : #{response.status_code}:#{response.body}")
+        raise "Failed to resolve credentials from container IAM role : #{response.status_code}:#{response.body}"
       end
     rescue e
       raise MissingCredentials.new e
