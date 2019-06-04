@@ -83,5 +83,31 @@ module Aws::Credentials
         end
       end
     end
+    describe "credentials" do
+      it "credentials not avairable in specific profile" do
+        file = TestingFile.create_file
+        begin
+          provider = SharedCredentialFileProvider.new(file_path: file.path, profile: "notavairable")
+          expect_raises(MissingCredentials) do
+            provider.credentials
+          end
+        ensure
+          file.close
+        end
+      end
+    end
+    describe "refresh" do
+      it "ensure nothing to do" do
+        file = TestingFile.create_file
+        begin
+          provider = SharedCredentialFileProvider.new(file_path: file.path, profile: "notavairable")
+          expect_raises(KeyError) do
+            provider.refresh
+          end
+        ensure
+          file.close
+        end
+      end
+    end
   end
 end

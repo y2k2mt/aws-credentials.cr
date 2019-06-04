@@ -39,6 +39,10 @@ module Aws::Credentials
     def credentials
       raise Exception.new "ERR"
     end
+
+    def refresh
+      raise Exception.new "REFRESH ERR"
+    end
   end
 
   class ProviderE
@@ -139,6 +143,17 @@ module Aws::Credentials
     describe "refresh" do
       it "resolve credentials from B" do
         provider = Providers.new([ProviderC.new, ProviderB.new, ProviderA.new] of Provider)
+        actual = provider.credentials
+        actual.access_key_id.should eq("ACCESSKEY_B")
+        actual.secret_access_key.should eq("SECRET_B")
+        provider.refresh
+        reprovided = provider.credentials
+        actual.session_token.should_not eq(reprovided.session_token)
+      end
+    end
+    describe "refresh" do
+      it "resolve credentials from B with error" do
+        provider = Providers.new([ProviderD.new, ProviderB.new, ProviderA.new] of Provider)
         actual = provider.credentials
         actual.access_key_id.should eq("ACCESSKEY_B")
         actual.secret_access_key.should eq("SECRET_B")

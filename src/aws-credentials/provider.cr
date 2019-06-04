@@ -14,7 +14,7 @@ module Aws::Credentials
     end
 
     def refresh : Nil
-      # Never expired as default
+      # Never expired at default
     end
   end
 
@@ -75,7 +75,12 @@ module Aws::Credentials
     end
 
     def refresh : Nil
-      @providers.each { |p| p.refresh }
+      @providers.each do |p|
+        p.refresh
+      rescue
+        # Nothing to do
+      end
+
       @resolved = nil
     end
   end
