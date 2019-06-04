@@ -1,3 +1,4 @@
+require "json"
 require "../http_client"
 
 module Aws::Credentials
