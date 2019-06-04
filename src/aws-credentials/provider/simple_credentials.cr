@@ -1,6 +1,7 @@
 module Aws::Credentials
   class SimpleCredentials
     include Provider
+    include CredentialsWithExpiration
 
     def initialize(
       access_key_id : String,
