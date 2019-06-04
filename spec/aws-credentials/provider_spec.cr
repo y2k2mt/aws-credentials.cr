@@ -94,14 +94,14 @@ module Aws::Credentials
       it "unresolve credentials" do
         provider = Providers.new([ProviderC.new, ProviderC.new, ProviderC.new] of Provider)
         actual = provider.credentials?
-        actual.should be_a MissingCredentials
+        actual.should be_nil
       end
     end
     describe "credentials" do
       it "unresolve credentials with other exception" do
         provider = Providers.new([ProviderC.new, ProviderC.new, ProviderD.new] of Provider)
         actual = provider.credentials?
-        actual.should be_a MissingCredentials
+        actual.should be_nil
       end
     end
     describe "credentials" do

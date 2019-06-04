@@ -29,7 +29,7 @@ module Aws::Credentials
       it "credentialss not avairable in env" do
         provider = EnvProvider.new
         actual = provider.credentials?
-        actual.should be_a MissingCredentials
+        actual.should be_nil
       end
     end
   end
