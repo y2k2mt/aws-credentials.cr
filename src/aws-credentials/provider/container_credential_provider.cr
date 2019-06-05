@@ -1,5 +1,5 @@
-require "../http_client"
 require "json"
+require "../http_client"
 
 module Aws::Credentials
   class ContainerCredentialProvider
