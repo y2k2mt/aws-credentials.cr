@@ -2,7 +2,7 @@ require "../spec_helper"
 require "awscr-signer"
 
 module Aws::Credentials
-  describe AssumeRoleCredentialProvider do
+  describe AssumeRoleProvider do
     it "resolved" do
       region = ENV["AC1_AWS_REGION"]?
       role_arn = ENV["AC1_ROLE_ARN"]?
@@ -18,7 +18,7 @@ module Aws::Credentials
         request
       }
 
-      role_provider = AssumeRoleCredentialProvider.new(
+      role_provider = AssumeRoleProvider.new(
         role_arn: role_arn.not_nil!,
         role_session_name: "Bob",
         sts_client: STSClient.new(

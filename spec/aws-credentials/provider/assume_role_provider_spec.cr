@@ -2,7 +2,7 @@ require "../../spec_helper"
 require "awscr-signer"
 
 module Aws::Credentials
-  describe AssumeRoleCredentialProvider do
+  describe AssumeRoleProvider do
     describe "credentials" do
       it "resolve credentials from sts endpoint" do
         server, relative_uri, expiration = Scenarios.scenario_sts
@@ -12,7 +12,7 @@ module Aws::Credentials
             Awscr::Signer::Signers::V4.new("sts", "ap-northeast-1", credentials.access_key_id, credentials.secret_access_key).sign(request)
             request
           }
-          provider = AssumeRoleCredentialProvider.new(
+          provider = AssumeRoleProvider.new(
             role_arn: "arn:aws:iam::123456789012:role/demo",
             role_session_name: "Bob",
             sts_client: STSClient.new(
@@ -43,7 +43,7 @@ module Aws::Credentials
             Awscr::Signer::Signers::V4.new("sts", "ap-northeast-1", credentials.access_key_id, credentials.secret_access_key).sign(request)
             request
           }
-          provider = AssumeRoleCredentialProvider.new(
+          provider = AssumeRoleProvider.new(
             role_arn: "arn:aws:iam::123456789012:role/demo",
             role_session_name: "Bob",
             sts_client: STSClient.new(
@@ -70,7 +70,7 @@ module Aws::Credentials
             Awscr::Signer::Signers::V4.new("sts", "ap-northeast-1", credentials.access_key_id, credentials.secret_access_key).sign(request)
             request
           }
-          provider = AssumeRoleCredentialProvider.new(
+          provider = AssumeRoleProvider.new(
             role_arn: "arn:aws:iam::123456789012:role/demo",
             role_session_name: "Bob",
             sts_client: STSClient.new(

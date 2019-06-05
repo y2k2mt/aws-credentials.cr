@@ -1,7 +1,7 @@
 require "../sts_client"
 
 module Aws::Credentials
-  class AssumeRoleCredentialProvider
+  class AssumeRoleProvider
     include Provider
 
     def initialize(
