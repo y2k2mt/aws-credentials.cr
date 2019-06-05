@@ -159,6 +159,8 @@ module Aws::Credentials
         actual.secret_access_key.should eq("SECRET_B")
         provider.refresh
         reprovided = provider.credentials
+        reprovided.access_key_id.should eq("ACCESSKEY_B")
+        reprovided.secret_access_key.should eq("SECRET_B")
         actual.session_token.should_not eq(reprovided.session_token)
       end
     end
