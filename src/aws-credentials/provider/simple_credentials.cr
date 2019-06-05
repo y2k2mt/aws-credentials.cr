@@ -1,4 +1,5 @@
 module Aws::Credentials
+  # Simply holds given credentials.
   class SimpleCredentials
     include Provider
     include CredentialsWithExpiration

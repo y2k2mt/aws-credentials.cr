@@ -2,6 +2,9 @@ require "json"
 require "../http_client"
 
 module Aws::Credentials
+  # Resolving credential from instance metadata.
+  #
+  # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
   class InstanceMetadataProvider
     include Provider
 

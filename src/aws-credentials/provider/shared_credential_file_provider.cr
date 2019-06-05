@@ -1,6 +1,9 @@
 require "ini"
 
 module Aws::Credentials
+  # Resolving credential from shared credential file.
+  #
+  # https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
   class SharedCredentialFileProvider
     include Provider
 

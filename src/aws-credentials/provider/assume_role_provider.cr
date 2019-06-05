@@ -1,6 +1,9 @@
 require "../sts_client"
 
 module Aws::Credentials
+  # Resolving credential via AWS Security Token Service(STS) as assume role.
+  #
+  # https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html
   class AssumeRoleProvider
     include Provider
 

@@ -2,6 +2,9 @@ require "json"
 require "../http_client"
 
 module Aws::Credentials
+  # Resolving credential from task role in container.
+  #
+  # https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html
   class ContainerCredentialProvider
     include Provider
 

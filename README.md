@@ -1,5 +1,7 @@
 # aws-credentials
 
+[![Build Status](https://travis-ci.org/y2k2mt/aws-credentials.svg?branch=master)](https://travis-ci.org/y2k2mt/aws-credentials)
+ 
 Get AWS credentials in various ways.
 
 ## Installation
@@ -10,7 +12,7 @@ Get AWS credentials in various ways.
 dependencies:
   aws-credentials:
     github: y2k2mt/aws-credentials
-    version: 0.1.1
+    version: 0.2.0
 ```
 
 2. Run `shards install`
@@ -18,7 +20,8 @@ dependencies:
 ## Usage
 
 `Providers` resolves credentials in order from given` Provider`.
-In the example below, at first ,`Providers` resolves credentials from EnvProvider ('AWS_ACCESS_KEY_ID' and 'AWS_SECRET_ACCESS_KEY') and then resolves credentials from SharedCredentialFileProvider ('~/.aws/credentials').
+
+In the example below, at first ,`Providers` resolves credentials from EnvProvider ('AWS_ACCESS_KEY_ID' and 'AWS_SECRET_ACCESS_KEY' in env) and then resolves credentials from SharedCredentialFileProvider ('~/.aws/credentials').
 
 ```crystal
 require "aws-credentials"
@@ -39,6 +42,9 @@ Current `Provider` implementations are:
 - [SharedCredentialFileProvider](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 - [InstanceMetadataProvider](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)
 - [ContainerCredentialProvider](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html)
+- [AssumeRoleProvider](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html)
+  - Usage: Please watch `spec/it/assume_role_with_sts_spec.cr`
+- SimpleCredentials (Simply holds given credentials)
 
 ## Contributing
 

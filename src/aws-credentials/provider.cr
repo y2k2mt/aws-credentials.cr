@@ -1,18 +1,28 @@
 module Aws::Credentials
   module Provider
+    # Resolving `AWS::Credentials::Credentials`.
+    #
+    # Credential not resolvable then raise `Aws::Credentials||MissingCredentials` error.
     abstract def credentials : Credentials
 
+    # Resolving `AWS::Credentials::Credentials`.
+    #
+    # Credential not resolvable then return `nil`
     def credentials? : Credentials?
       credentials
     rescue e
       nil
     end
 
+    # Clear cache and reload credential from source.
     def refresh : Nil
       # Never expired at default
     end
   end
 
+  # `Providers` provides credentials from multiple `Provider` and holds until expiration of credential.
+  #
+  # Credential expiration is reached then reload credentials from given `Provider`s.
   class Providers
     include Provider
     include CredentialsWithExpiration
