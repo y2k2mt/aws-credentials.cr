@@ -22,7 +22,10 @@ module Aws::Credentials
         role_arn: role_arn.not_nil!,
         role_session_name: "Bob",
         sts_client: STSClient.new(
-          contractor_credential_provider: Providers.new([EnvProvider.new] of Provider).as(Provider),
+          contractor_credential_provider: Providers.new([SimpleCredentials.new(
+            access_key_id: access_key_id.not_nil!,
+            secret_access_key: secret_access_key.not_nil!,
+          )] of Provider).as(Provider),
           signer: signer,
           region: region.not_nil!,
         ),
