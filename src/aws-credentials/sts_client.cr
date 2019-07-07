@@ -32,7 +32,7 @@ module Aws::Credentials
         form
       }
       endpoint_uri = URI.parse @endpoint
-      request = HTTP::Request.new("GET", endpoint_uri.path || "/")
+      request = HTTP::Request.new "GET", endpoint_uri.path || "/"
       request.headers["Host"] = endpoint_uri.host.not_nil!
       request.query = param
       signed_request = @signer.call(request, @contractor_credential_provider.credentials)

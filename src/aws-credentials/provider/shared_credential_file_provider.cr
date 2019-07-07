@@ -18,14 +18,14 @@ module Aws::Credentials
     end
 
     def credentials : Credentials
-      if !@config
-        refresh
-      end
-      Credentials.new(
-        access_key_id: @config.not_nil!["aws_access_key_id"],
-        secret_access_key: @config.not_nil!["aws_secret_access_key"],
-        session_token: @config.not_nil!["aws_session_token"]?
-      )
+      refresh unless @config
+      @config.try { |conf|
+        Credentials.new(
+          access_key_id: conf["aws_access_key_id"],
+          secret_access_key: conf["aws_secret_access_key"],
+          session_token: conf["aws_session_token"]?
+        )
+      } || raise MissingCredentials.new "No Shared credential file loaded."
     rescue e
       raise MissingCredentials.new e
     end
@@ -35,7 +35,7 @@ module Aws::Credentials
     end
 
     private def load : Hash(String, String)
-      file_content = File.read(@file_path)
+      file_content = File.read @file_path
       INI.parse(file_content)[@profile]
     end
   end
