@@ -18,18 +18,6 @@ module Aws::Credentials
       end
     end
     describe "credentials" do
-      it "credentialss not avairable" do
-        provider = SimpleCredentials.new(
-          access_key_id: "ACCESS_KEY",
-          secret_access_key: "SESSION_KEY",
-          credentials: nil,
-        )
-        expect_raises(MissingCredentials) do
-          provider.credentials
-        end
-      end
-    end
-    describe "credentials" do
       it "credentials is expired" do
         current = Time.parse_iso8601 "2019-05-21T00:00:00Z"
         provider = SimpleCredentials.new(
