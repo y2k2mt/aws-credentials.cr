@@ -17,7 +17,7 @@ module Aws::Credentials
     end
 
     def credentials : Credentials
-      @sts_client.assume_role(@role_arn, @role_session_name, @duration, @policy)
+      @sts_client.assume_role @role_arn, @role_session_name, @duration, @policy
     end
   end
 end

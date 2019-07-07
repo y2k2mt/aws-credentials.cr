@@ -14,11 +14,8 @@ module Aws::Credentials
     end
 
     private def lazy_resolve_url
-      if !@container_credential_url
-        "http://169.254.170.2#{ENV.fetch("AWS_CONTAINER_CREDENTIALS_RELATIVE_URI")}"
-      else
-        @container_credential_url.not_nil!
-      end
+      @container_credential_url = "http://169.254.170.2#{ENV.fetch("AWS_CONTAINER_CREDENTIALS_RELATIVE_URI")}" unless @container_credential_url
+      @container_credential_url.not_nil!
     end
 
     def credentials : Credentials
@@ -32,12 +29,12 @@ module Aws::Credentials
             secret_access_key: credentials["SecretAccessKey"].as_s,
             session_token: credentials["Token"]?.try &.as_s?,
             expiration: credentials["Expiration"]?.try &.as_s?.try do |ex|
-              Time.parse_iso8601(ex)
+              Time.parse_iso8601 ex
             end
           )
         end
       else
-        raise "Failed to resolve credentials from container IAM role : #{response.status_code}:#{response.body}"
+        raise MissingCredentials.new "Failed to resolve credentials from container IAM role : #{response.status_code}:#{response.body}"
       end
     rescue e
       raise MissingCredentials.new e

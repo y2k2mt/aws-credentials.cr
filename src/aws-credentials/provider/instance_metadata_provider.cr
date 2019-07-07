@@ -26,15 +26,15 @@ module Aws::Credentials
             access_key_id: credentials["AccessKeyId"].as_s,
             secret_access_key: credentials["SecretAccessKey"].as_s,
             session_token: credentials["Token"]?.try &.as_s?,
-            expiration: credentials["Expiration"]?.try &.as_s?.try do |ex|
-              Time.parse_iso8601(ex)
+            expiration: credentials["Expiration"]?.try &.as_s?.try do |exp|
+              Time.parse_iso8601 exp
             end
           )
         else
-          raise "Failed to resolve security credentials from IAM role : #{response.status_code}:#{response.body}"
+          raise MissingCredentials.new "Failed to resolve security credentials from IAM role : #{response.status_code}:#{response.body}"
         end
       else
-        raise "Failed to resolve IAM role name : #{response.status_code}:#{response.body}"
+        raise MissingCredentials.new "Failed to resolve IAM role name : #{response.status_code}:#{response.body}"
       end
     rescue e
       raise MissingCredentials.new e
