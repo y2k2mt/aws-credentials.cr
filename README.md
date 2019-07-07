@@ -13,7 +13,7 @@ Get AWS credentials in various ways.
 dependencies:
   aws-credentials:
     github: y2k2mt/aws-credentials
-    version: 0.2.0
+    version: 0.3.0
 ```
 
 2. Run `shards install`
