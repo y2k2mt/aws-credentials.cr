@@ -10,7 +10,7 @@ license: MIT
 
 development_dependencies:
   ameba:
-    github: veelenga/ameba
+    github: crystal-ameba/ameba
     version: ~> 0.10.0
   awscr-signer:
     github: taylorfinnell/awscr-signer
