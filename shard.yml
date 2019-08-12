@@ -4,7 +4,7 @@ version: 0.4.0
 authors:
   - y2k2mt <y2.k2mt@gmail.com>
 
-crystal: 0.29.0
+crystal: 0.30.0
 
 license: MIT
 
@@ -14,4 +14,4 @@ development_dependencies:
     version: ~> 0.10.0
   awscr-signer:
     github: taylorfinnell/awscr-signer
-    version: 0.5.4
+    version: 0.6.0
