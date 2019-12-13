@@ -31,7 +31,7 @@ module Aws::Credentials
 
     def initialize(
       @providers : Array(Provider),
-      @current_time_provider : Proc(Time) = ->{ Time.now }
+      @current_time_provider : Proc(Time) = ->{ Time.utc }
     )
     end
 
