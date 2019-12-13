@@ -9,7 +9,7 @@ module Aws::Credentials
       @secret_access_key : String,
       @session_token : String? = nil,
       @expiration : Time? = nil,
-      @current_time_provider : Proc(Time) = ->{ Time.now }
+      @current_time_provider : Proc(Time) = ->{ Time.utc }
     )
     end
 

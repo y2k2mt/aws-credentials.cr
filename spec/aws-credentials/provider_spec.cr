@@ -4,7 +4,7 @@ module Aws::Credentials
   class ProviderA
     include Provider
 
-    def credentials
+    def credentials : Credentials
       Credentials.new(
         access_key_id: "ACCESSKEY_A",
         secret_access_key: "SECRET_A",
@@ -15,7 +15,7 @@ module Aws::Credentials
   class ProviderB
     include Provider
 
-    def credentials
+    def credentials : Credentials
       Credentials.new(
         access_key_id: "ACCESSKEY_B",
         secret_access_key: "SECRET_B",
@@ -28,7 +28,7 @@ module Aws::Credentials
   class ProviderC
     include Provider
 
-    def credentials
+    def credentials : Credentials
       raise MissingCredentials.new "ERR"
     end
   end
@@ -36,7 +36,7 @@ module Aws::Credentials
   class ProviderD
     include Provider
 
-    def credentials
+    def credentials : Credentials
       raise Exception.new "ERR"
     end
 
@@ -53,7 +53,7 @@ module Aws::Credentials
     def initialize(@current_time : Time)
     end
 
-    def credentials
+    def credentials : Credentials
       expiration = Time.parse_iso8601("2019-05-21T00:00:00Z")
       if expiration.to_unix < @current_time.to_unix
         Credentials.new(
