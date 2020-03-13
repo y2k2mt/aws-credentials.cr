@@ -13,7 +13,6 @@ Get AWS credentials in various ways.
 dependencies:
   aws-credentials:
     github: y2k2mt/aws-credentials
-    version: 0.3.0
 ```
 
 2. Run `shards install`
@@ -38,7 +37,7 @@ credentials = provider.credentials
 # Aws::Credentials::Credentials(@access_key_id="AKIA...",@expiration=nil,@secret_access_key="mVlf...",@session_token=nil)
 ```
 
-Current `Provider` implementations are:
+Current `Provider` implementation is as follows:
 - [EnvProvider](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html)
 - [SharedCredentialFileProvider](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 - [InstanceMetadataProvider](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)
