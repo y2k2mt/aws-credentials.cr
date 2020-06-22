@@ -4,14 +4,14 @@ version: 0.4.0
 authors:
   - y2k2mt <y2.k2mt@gmail.com>
 
-crystal: 0.33.0
+crystal: 0.35.1
 
 license: MIT
 
 development_dependencies:
   ameba:
     github: crystal-ameba/ameba
-    version: ~> 0.11.0
+    version: ~> 0.12.0
   awscr-signer:
     github: taylorfinnell/awscr-signer
-    version: ~> 0.7.0
+    version: ~> 0.8.0
