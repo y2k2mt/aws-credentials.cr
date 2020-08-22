@@ -1,7 +1,7 @@
 # aws-credentials
 
-[![Build Status](https://travis-ci.org/y2k2mt/aws-credentials.svg?branch=master)](https://travis-ci.org/y2k2mt/aws-credentials)
-[![Releases](https://img.shields.io/github/release/y2k2mt/aws-credentials.svg?maxAge=360)](https://github.com/y2k2mt/aws-credentials/releases)
+[![Build Status](https://travis-ci.org/y2k2mt/aws-credentials.cr.svg?branch=master)](https://travis-ci.org/y2k2mt/aws-credentials.cr)
+[![Releases](https://img.shields.io/github/release/y2k2mt/aws-credentials.cr.svg?maxAge=360)](https://github.com/y2k2mt/aws-credentials.cr/releases)
  
 Get AWS credentials in various ways.
 
