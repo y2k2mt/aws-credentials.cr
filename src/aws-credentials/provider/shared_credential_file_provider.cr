@@ -10,9 +10,10 @@ module Aws::Credentials
     @config : Hash(String, String)? = nil
 
     def initialize(
-      @file_path : String = ENV["AWS_SHARED_CREDENTIALS_FILE"]?.try { |e|
-        File.expand_path e
-      } || File.expand_path("~/.aws/credentials"),
+      @file_path : String = File.expand_path(
+        ENV.fetch("AWS_SHARED_CREDENTIALS_FILE", "~/.aws/credentials"),
+        home: true
+      ),
       @profile : String = "default"
     )
     end
