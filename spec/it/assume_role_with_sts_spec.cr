@@ -37,7 +37,7 @@ module Aws::Credentials
         role_provider,
       ] of Provider
 
-      pp! actual = provider.credentials
+      actual = provider.credentials
       actual.access_key_id.should_not be_nil
       actual.secret_access_key.should_not be_nil
       actual.session_token.should_not be_nil

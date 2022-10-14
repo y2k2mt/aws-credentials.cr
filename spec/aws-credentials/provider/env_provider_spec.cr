@@ -21,7 +21,7 @@ module Aws::Credentials
       it "credentialss not avairable in env" do
         provider = EnvProvider.new
         expect_raises(MissingCredentials) do
-          pp provider.credentials
+          provider.credentials
         end
       end
     end
