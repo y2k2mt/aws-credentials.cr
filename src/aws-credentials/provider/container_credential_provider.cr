@@ -15,7 +15,7 @@ module Aws::Credentials
 
     private def lazy_resolve_url
       @container_credential_url = "http://169.254.170.2#{ENV.fetch("AWS_CONTAINER_CREDENTIALS_RELATIVE_URI")}" unless @container_credential_url
-      @container_credential_url.not_nil!
+      @container_credential_url || raise MissingCredentials.new "Failed to resolve credentials from container IAM role : [No URL]"
     end
 
     def credentials : Credentials

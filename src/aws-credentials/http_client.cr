@@ -7,10 +7,10 @@ module Aws::Credentials
       http = HTTP::Client.new uri
       begin
         http.connect_timeout = 5.seconds
-        if headers
-          http.headers = headers.not_nil!
+        headers.try do |h|
+          http.headers = h
         end
-        http.get uri.path.not_nil!
+        http.get uri.path || raise "Missin URL path"
       ensure
         http.close
       end

@@ -20,13 +20,13 @@ module Aws::Credentials
         session_token: @session_token,
         expiration: @expiration,
       ) unless @credentials
-      @credentials.not_nil!
+      @credentials || raise MissingCredentials.new "No credentials available"
     end
 
     def credentials : Credentials
       resolved = resolve_credentials
       if unresolved_or_expired resolved, @current_time_provider
-        raise MissingCredentials.new "No credentials avairable"
+        raise MissingCredentials.new "No credentials available"
       else
         resolved
       end

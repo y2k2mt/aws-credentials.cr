@@ -40,7 +40,7 @@ module Aws::Credentials
         refresh
         @resolved = resolve_credentials
       end
-      @resolved.not_nil!
+      @resolved || raise MissingCredentials.new "No resolved credentials from #{@providers}"
     end
 
     private def resolve_credentials : Credentials
