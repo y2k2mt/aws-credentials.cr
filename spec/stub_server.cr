@@ -1,3 +1,4 @@
+# ameba:disable Lint/SpecFilename
 require "http/server"
 
 module ServerStub

@@ -23,11 +23,11 @@ module Aws::Credentials
         form.add "Action", "AssumeRole"
         form.add "RoleSessionName", @role_session_name
         form.add "RoleArn", @role_arn
-        @policy.try { |p|
-          form.add "Policy", p.to_json
+        @policy.try { |policy_|
+          form.add "Policy", policy_.to_json
         }
-        @duration.try { |d|
-          form.add "DurationSeconds", d.total_seconds.to_i64.to_s
+        @duration.try { |duration_|
+          form.add "DurationSeconds", duration_.total_seconds.to_i64.to_s
         }
         form
       }

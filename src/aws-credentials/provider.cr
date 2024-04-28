@@ -44,14 +44,14 @@ module Aws::Credentials
     end
 
     private def resolve_credentials : Credentials
-      @providers.find { |p|
-        p.credentials? ? true : false
+      @providers.find { |provider_|
+        provider_.credentials? ? true : false
       }.try &.credentials? || raise MissingCredentials.new "No provider serves credential : #{@providers.map(&.class.name)}"
     end
 
     def refresh : Nil
-      @providers.each do |p|
-        p.refresh
+      @providers.each do |provider_|
+        provider_.refresh
       rescue
         # Nothing to do
       end
