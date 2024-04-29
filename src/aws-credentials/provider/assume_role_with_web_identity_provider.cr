@@ -8,29 +8,24 @@ module Aws::Credentials
     include Provider
 
     def initialize(
-      @role_arn : String,
       @role_session_name : String,
-      @web_identity_token : String,
-      @sts_client : STSClient,
+      @role_arn : String? = nil,
+      @web_identity_token : String? = nil,
+      sts_client : STSClient? = nil,
       @duration : Time::Span? = nil,
       @policy : JSON::Any? = nil
     )
-    end
-
-    # An option for a container where almost all the values are defined in
-    # an environment variables
-    def initialize(@role_session_name : String, @duration : Time::Span? = nil, @policy : JSON::Any? = nil)
-      @role_arn = ENV["AWS_ROLE_ARN"]
-      @web_identity_token = File.read(ENV["AWS_WEB_IDENTITY_TOKEN_FILE"])
       # No need to sign the request, so the default client is fine
-      @sts_client = STSClient.new(region: ENV["AWS_REGION"])
+      @sts_client = sts_client || STSClient.new(region: ENV["AWS_REGION"]? || "us-east-1")
     end
 
     def credentials : Credentials
+      role_arn = @role_arn || ENV["AWS_ROLE_ARN"]
+      web_identity_token = @web_identity_token || File.read(ENV["AWS_WEB_IDENTITY_TOKEN_FILE"])
       @sts_client.assume_role_with_web_identity(
-        @role_arn,
+        role_arn,
         @role_session_name,
-        @web_identity_token,
+        web_identity_token,
         @duration,
         @policy
       )
