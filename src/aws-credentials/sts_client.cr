@@ -42,7 +42,8 @@ module Aws::Credentials
         form
       }
       endpoint_uri = URI.parse @endpoint
-      request = HTTP::Request.new "GET", endpoint_uri.path || "/"
+      endpoint_uri.path = "/" unless endpoint_uri.path.presence
+      request = HTTP::Request.new "GET", endpoint_uri.path
       request.headers["Host"] = endpoint_uri.host || raise "Endpoint#url is required"
       request.query = param
       signed_request = @signer.call(request, @contractor_credential_provider.credentials)
@@ -86,7 +87,8 @@ module Aws::Credentials
         form
       }
       endpoint_uri = URI.parse @endpoint
-      request = HTTP::Request.new "POST", endpoint_uri.path || "/"
+      endpoint_uri.path = "/" unless endpoint_uri.path.presence
+      request = HTTP::Request.new "POST", endpoint_uri.path
       request.headers["Host"] = endpoint_uri.host || raise "Endpoint#url is required"
       request.body = param
       # It is not required to sign this request
