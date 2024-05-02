@@ -12,8 +12,10 @@ module Aws::Credentials
       @role_session_name : String,
       @sts_client : STSClient,
       @duration : Time::Span? = nil,
-      @policy : JSON::Any? = nil
+      @policy : JSON::Any? = nil,
+      logger : Log = ::Log.for("AWS.Credentials")
     )
+      @logger = logger.for("AssumeRoleProvider")
     end
 
     def credentials : Credentials

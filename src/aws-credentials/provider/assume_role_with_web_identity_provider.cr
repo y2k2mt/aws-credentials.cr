@@ -13,15 +13,22 @@ module Aws::Credentials
       @web_identity_token : String? = nil,
       sts_client : STSClient? = nil,
       @duration : Time::Span? = nil,
-      @policy : JSON::Any? = nil
+      @policy : JSON::Any? = nil,
+      logger : Log = ::Log.for("AWS.Credentials")
     )
+      @logger = logger.for("AssumeRoleWithWebIdentityProvider")
       # No need to sign the request, so the default client is fine
       @sts_client = sts_client || STSClient.new(region: ENV["AWS_REGION"]? || "us-east-1")
     end
 
     def credentials : Credentials
-      role_arn = @role_arn || ENV["AWS_ROLE_ARN"]
-      web_identity_token = @web_identity_token || File.read(ENV["AWS_WEB_IDENTITY_TOKEN_FILE"])
+      role_arn = @role_arn ||
+                 ENV["AWS_ROLE_ARN"] ||
+                 raise MissingCredentials.new "Failed to locate Role ARN"
+      web_identity_token = @web_identity_token ||
+                           File.read(ENV["AWS_WEB_IDENTITY_TOKEN_FILE"]) ||
+                           raise MissingCredentials.new "Failed to locate Web Identity Token"
+
       @sts_client.assume_role_with_web_identity(
         role_arn,
         @role_session_name,

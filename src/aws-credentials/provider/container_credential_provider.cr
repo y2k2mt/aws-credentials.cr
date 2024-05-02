@@ -9,8 +9,10 @@ module Aws::Credentials
     include Provider
 
     def initialize(
-      @container_credential_url : String? = nil
+      @container_credential_url : String? = nil,
+      logger : Log = ::Log.for("AWS.Credentials")
     )
+      @logger = logger.for("ContainerCredentialProvider")
     end
 
     private def lazy_resolve_url
