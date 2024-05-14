@@ -7,6 +7,8 @@ module Aws::Credentials
   class AssumeRoleWithWebIdentityProvider
     include Provider
 
+    @last_credentials : Credentials? = nil
+
     def initialize(
       @role_session_name : String,
       @role_arn : String? = nil,
@@ -22,6 +24,11 @@ module Aws::Credentials
     end
 
     def credentials : Credentials
+      refresh unless @last_credentials
+      @last_credentials || raise MissingCredentials.new("Unable to retrieve credentials")
+    end
+
+    def refresh : Nil
       role_arn = @role_arn ||
                  ENV["AWS_ROLE_ARN"] ||
                  raise MissingCredentials.new "Failed to locate Role ARN"
@@ -29,7 +36,7 @@ module Aws::Credentials
                            File.read(ENV["AWS_WEB_IDENTITY_TOKEN_FILE"]) ||
                            raise MissingCredentials.new "Failed to locate Web Identity Token"
 
-      @sts_client.assume_role_with_web_identity(
+      @last_credentials = @sts_client.assume_role_with_web_identity(
         role_arn,
         @role_session_name,
         web_identity_token,

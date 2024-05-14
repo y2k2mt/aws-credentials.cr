@@ -90,6 +90,7 @@ module Aws::Credentials
       endpoint_uri.path = "/" unless endpoint_uri.path.presence
       request = HTTP::Request.new "POST", endpoint_uri.path
       request.headers["Host"] = endpoint_uri.host || raise "Endpoint#url is required"
+      request.headers["Content-Type"] = "application/x-www-form-urlencoded"
       request.body = param
       # It is not required to sign this request
       response = HTTPClient.exec endpoint_uri, request

@@ -7,6 +7,8 @@ module Aws::Credentials
   class AssumeRoleProvider
     include Provider
 
+    @last_credentials : Credentials? = nil
+
     def initialize(
       @role_arn : String,
       @role_session_name : String,
@@ -19,7 +21,12 @@ module Aws::Credentials
     end
 
     def credentials : Credentials
-      @sts_client.assume_role @role_arn, @role_session_name, @duration, @policy
+      refresh unless @last_credentials
+      @last_credentials || raise MissingCredentials.new("Unable to retrieve credentials")
+    end
+
+    def refresh : Nil
+      @last_credentials = @sts_client.assume_role(@role_arn, @role_session_name, @duration, @policy)
     end
   end
 end

@@ -40,6 +40,8 @@ module Aws::Credentials
     @resolved : Credentials? = nil
     @logger : Log
 
+    setter current_time_provider : Proc(Time)
+
     def initialize(
       @providers : Array(Provider),
       @current_time_provider : Proc(Time) = ->{ Time.utc },
@@ -49,23 +51,26 @@ module Aws::Credentials
     end
 
     def credentials : Credentials
-      if unresolved_or_expired @resolved, @current_time_provider
-        @logger.trace { "No valid credentials are present, refreshing" }
-        refresh
-        @resolved = resolve_credentials
+      creds = @resolved
+      if !creds
+        @logger.debug { "No credentials are available, resolving new credentials" }
+      elsif expired?(creds, @current_time_provider)
+        @logger.debug { "The credentials have expired, resolving new credentials" }
+      else
+        return creds
+      end
+      refresh
+
+      @resolved = nil
+      @providers.each do |provider_|
+        if creds = provider_.credentials?
+          next if expired?(creds, @current_time_provider)
+          @logger.debug { "Found credentials with provider #{provider_.class.name}" }
+          @resolved = creds
+          break
+        end
       end
       @resolved || raise MissingCredentials.new "No resolved credentials from #{@providers.map(&.class.name)}"
-    end
-
-    private def resolve_credentials : Credentials
-      @providers.find { |provider_|
-        if provider_.credentials?
-          @logger.debug { "Found credentials with provider #{provider_.class.name}" }
-          true
-        else
-          false
-        end
-      }.try &.credentials? || raise MissingCredentials.new "No provider serves credential : #{@providers.map(&.class.name)}"
     end
 
     def refresh : Nil
