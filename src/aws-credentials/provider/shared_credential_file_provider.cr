@@ -14,8 +14,10 @@ module Aws::Credentials
         ENV.fetch("AWS_SHARED_CREDENTIALS_FILE", "~/.aws/credentials"),
         home: true
       ),
-      @profile : String = "default"
+      @profile : String = "default",
+      logger : Log = ::Log.for("AWS.Credentials")
     )
+      @logger = logger.for("SharedCredentialFileProvider")
     end
 
     def credentials : Credentials

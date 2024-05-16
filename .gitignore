@@ -9,3 +9,7 @@
 /shard.lock
 
 .tool-versions
+
+# vim-related files
+*.swp
+Session.vim
