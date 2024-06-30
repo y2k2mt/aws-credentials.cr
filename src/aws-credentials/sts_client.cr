@@ -13,21 +13,21 @@ module Aws::Credentials
     end
 
     def assume_role(
-      @role_arn : String,
-      @role_session_name : String,
-      @duration : Time::Span? = nil,
-      @policy : JSON::Any? = nil
+      role_arn : String,
+      role_session_name : String,
+      maybe_duration : Time::Span? = nil,
+      maybe_policy : JSON::Any? = nil
     ) : Credentials
       param = HTTP::Params.build { |form|
         form.add "Version", "2011-06-15"
         form.add "Action", "AssumeRole"
-        form.add "RoleSessionName", @role_session_name
-        form.add "RoleArn", @role_arn
-        @policy.try { |p|
-          form.add "Policy", p.to_json
+        form.add "RoleSessionName", role_session_name
+        form.add "RoleArn", role_arn
+        maybe_policy.try { |policy|
+          form.add "Policy", policy.to_json
         }
-        @duration.try { |d|
-          form.add "DurationSeconds", d.total_seconds.to_i64.to_s
+        maybe_duration.try { |duration|
+          form.add "DurationSeconds", duration.total_seconds.to_i64.to_s
         }
         form
       }

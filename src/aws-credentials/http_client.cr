@@ -3,12 +3,12 @@ require "http/client"
 
 module Aws::Credentials
   module HTTPClient
-    def self.get(uri : URI, headers : HTTP::Headers? = nil)
+    def self.get(uri : URI, maybe_headers : HTTP::Headers? = nil)
       http = HTTP::Client.new uri
       begin
         http.connect_timeout = 5.seconds
-        headers.try do |h|
-          http.headers = h
+        maybe_headers.try do |headers|
+          http.headers = headers
         end
         http.get uri.path || raise "Missin URL path"
       ensure
