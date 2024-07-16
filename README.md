@@ -44,6 +44,8 @@ Current `Provider` implementation is as follows:
 - [ContainerCredentialProvider](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html)
 - [AssumeRoleProvider](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html)
   - Usage: Please watch `spec/it/assume_role_with_sts_spec.cr`
+- [AssumeRoleWithWebIdentityProvider](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRoleWithWebIdentity.html)
+  - Usage: Please watch `spec/it/assume_role_with_sts_spec.cr`
 - SimpleCredentials (Simply holds given credentials)
 
 ## Contributing

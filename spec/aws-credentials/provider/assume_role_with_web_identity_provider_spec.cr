@@ -2,24 +2,19 @@ require "../../spec_helper"
 require "awscr-signer"
 
 module Aws::Credentials
-  describe AssumeRoleProvider do
+  describe AssumeRoleWithWebIdentityProvider do
     it "resolve credentials from sts endpoint" do
       server, relative_uri = Scenarios.scenario_sts
       begin
         url = "http://127.0.0.1:#{server[:port]}#{relative_uri}"
-        signer = ->(request : HTTP::Request, credentials : Credentials) {
-          Awscr::Signer::Signers::V4.new("sts", "ap-northeast-1", credentials.access_key_id, credentials.secret_access_key).sign(request)
-          request
-        }
-        provider = AssumeRoleProvider.new(
+        token = <<-JWT
+        eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        JWT
+        provider = AssumeRoleWithWebIdentityProvider.new(
           role_arn: "arn:aws:iam::123456789012:role/demo",
           role_session_name: "Bob",
+          web_identity_token: token,
           sts_client: STSClient.new(
-            contractor_credential_provider: Providers.new([SimpleCredentials.new(
-              access_key_id: "KEY_ID",
-              secret_access_key: "SECRET_KEY",
-            )] of Provider).as(Provider),
-            signer: signer,
             endpoint: url,
           ),
         )
@@ -40,16 +35,14 @@ module Aws::Credentials
       server, relative_uri = Scenarios.scenario_sts
       begin
         url = "http://127.0.0.1:#{server[:port]}#{relative_uri}notavairable"
-        signer = ->(request : HTTP::Request, credentials : Credentials) {
-          Awscr::Signer::Signers::V4.new("sts", "ap-northeast-1", credentials.access_key_id, credentials.secret_access_key).sign(request)
-          request
-        }
-        provider = AssumeRoleProvider.new(
+        token = <<-JWT
+        eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        JWT
+        provider = AssumeRoleWithWebIdentityProvider.new(
           role_arn: "arn:aws:iam::123456789012:role/demo",
           role_session_name: "Bob",
+          web_identity_token: token,
           sts_client: STSClient.new(
-            contractor_credential_provider: Providers.new([EnvProvider.new, SharedCredentialFileProvider.new] of Provider).as(Provider),
-            signer: signer,
             endpoint: url,
           ),
         )
@@ -66,16 +59,14 @@ module Aws::Credentials
       server, relative_uri = Scenarios.scenario_sts_invalid
       begin
         url = "http://127.0.0.1:#{server[:port]}#{relative_uri}"
-        signer = ->(request : HTTP::Request, credentials : Credentials) {
-          Awscr::Signer::Signers::V4.new("sts", "ap-northeast-1", credentials.access_key_id, credentials.secret_access_key).sign(request)
-          request
-        }
-        provider = AssumeRoleProvider.new(
+        token = <<-JWT
+        eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        JWT
+        provider = AssumeRoleWithWebIdentityProvider.new(
           role_arn: "arn:aws:iam::123456789012:role/demo",
           role_session_name: "Bob",
+          web_identity_token: token,
           sts_client: STSClient.new(
-            contractor_credential_provider: Providers.new([EnvProvider.new, SharedCredentialFileProvider.new] of Provider).as(Provider),
-            signer: signer,
             endpoint: url,
           ),
         )
@@ -92,19 +83,14 @@ module Aws::Credentials
       server, relative_uri = Scenarios.scenario_sts(1.second)
       begin
         url = "http://127.0.0.1:#{server[:port]}#{relative_uri}"
-        signer = ->(request : HTTP::Request, credentials : Credentials) {
-          Awscr::Signer::Signers::V4.new("sts", "ap-northeast-1", credentials.access_key_id, credentials.secret_access_key).sign(request)
-          request
-        }
-        provider = AssumeRoleProvider.new(
+        token = <<-JWT
+        eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        JWT
+        provider = AssumeRoleWithWebIdentityProvider.new(
           role_arn: "arn:aws:iam::123456789012:role/demo",
           role_session_name: "Bob",
+          web_identity_token: token,
           sts_client: STSClient.new(
-            contractor_credential_provider: Providers.new([SimpleCredentials.new(
-              access_key_id: "KEY_ID",
-              secret_access_key: "SECRET_KEY",
-            )] of Provider).as(Provider),
-            signer: signer,
             endpoint: url,
           ),
         )

@@ -9,8 +9,10 @@ module Aws::Credentials
       @secret_access_key : String,
       @session_token : String? = nil,
       @expiration : Time? = nil,
-      @current_time_provider : Proc(Time) = ->{ Time.utc }
+      @current_time_provider : Proc(Time) = ->{ Time.utc },
+      logger : Log = ::Log.for("AWS.Credentials")
     )
+      @logger = logger.for("SimpleCredentials")
     end
 
     private def resolve_credentials : Credentials

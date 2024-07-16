@@ -5,6 +5,10 @@ module Aws::Credentials
   class EnvProvider
     include Provider
 
+    def initialize(logger : Log = ::Log.for("AWS.Credentials"))
+      @logger = logger.for("EnvProvider")
+    end
+
     def credentials : Credentials
       Credentials.new(
         access_key_id: ENV["AWS_ACCESS_KEY_ID"],
