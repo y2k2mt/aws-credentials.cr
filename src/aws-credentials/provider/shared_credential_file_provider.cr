@@ -15,7 +15,7 @@ module Aws::Credentials
         home: true
       ),
       @profile : String = "default",
-      logger : Log = ::Log.for("AWS.Credentials")
+      logger : Log = ::Log.for("AWS.Credentials"),
     )
       @logger = logger.for("SharedCredentialFileProvider")
     end

@@ -44,8 +44,8 @@ module Aws::Credentials
 
     def initialize(
       @providers : Array(Provider),
-      @current_time_provider : Proc(Time) = ->{ Time.utc },
-      logger : Log = ::Log.for("AWS.Credentials")
+      @current_time_provider : Proc(Time) = -> { Time.utc },
+      logger : Log = ::Log.for("AWS.Credentials"),
     )
       @logger = logger.for({{ @type.name.split("::")[-1] }})
     end

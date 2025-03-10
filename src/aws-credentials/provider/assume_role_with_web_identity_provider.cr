@@ -16,7 +16,7 @@ module Aws::Credentials
       sts_client : STSClient? = nil,
       @duration : Time::Span? = nil,
       @policy : JSON::Any? = nil,
-      logger : Log = ::Log.for("AWS.Credentials")
+      logger : Log = ::Log.for("AWS.Credentials"),
     )
       @logger = logger.for("AssumeRoleWithWebIdentityProvider")
       # No need to sign the request, so the default client is fine

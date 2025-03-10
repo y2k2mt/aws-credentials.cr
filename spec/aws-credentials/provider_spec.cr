@@ -133,14 +133,14 @@ module Aws::Credentials
       e = ProviderE.new(current)
       provider = Providers.new(
         providers: [e] of Provider,
-        current_time_provider: ->{ current },
+        current_time_provider: -> { current },
       )
       actual = provider.credentials
       actual.access_key_id.should eq "ACCESSKEY_E1"
 
       current2 = Time.parse_iso8601("2019-05-20T23:00:00Z")
       e.current_time = current2
-      provider.current_time_provider = ->{ current2 }
+      provider.current_time_provider = -> { current2 }
       reprovided = provider.credentials
       # NOT expired and expects same
       actual.hash.should eq(reprovided.hash)
@@ -151,7 +151,7 @@ module Aws::Credentials
       e = ProviderE.new(current)
       provider = Providers.new(
         providers: [e] of Provider,
-        current_time_provider: ->{ current },
+        current_time_provider: -> { current },
       )
       actual = provider.credentials
       actual.access_key_id.should eq "ACCESSKEY_E1"
@@ -159,7 +159,7 @@ module Aws::Credentials
       current2 = Time.parse_iso8601("2019-05-21T01:00:00Z")
       e.current_time = current2
       e.expiration = Time.parse_iso8601("2019-05-22T00:00:00Z")
-      provider.current_time_provider = ->{ current2 }
+      provider.current_time_provider = -> { current2 }
       reprovided = provider.credentials
       # Expired and refreshed
       actual.hash.should_not eq(reprovided.hash)

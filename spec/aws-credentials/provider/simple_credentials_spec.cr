@@ -25,7 +25,7 @@ module Aws::Credentials
           secret_access_key: "SECRET_KEY",
           session_token: "SESSION_KEY",
           expiration: Time.parse_iso8601("2019-05-20T22:00:00Z"),
-          current_time_provider: ->{ current },
+          current_time_provider: -> { current },
         )
         expect_raises(MissingCredentials) do
           provider.credentials
@@ -41,7 +41,7 @@ module Aws::Credentials
           secret_access_key: "SECRET_KEY",
           session_token: "SESSION_KEY",
           expiration: expiration,
-          current_time_provider: ->{ current },
+          current_time_provider: -> { current },
         )
         actual = provider.credentials
         actual.access_key_id.should eq "ACCESS_KEY"
