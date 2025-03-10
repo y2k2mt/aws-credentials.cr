@@ -8,13 +8,13 @@ module Aws::Credentials
       @contractor_credential_provider : Provider,
       @signer : Proc(HTTP::Request, Credentials, HTTP::Request),
       region : String? = nil,
-      @endpoint : String = region ? "https://sts.#{region}.amazonaws.com" : "https://sts.amazonaws.com"
+      @endpoint : String = region ? "https://sts.#{region}.amazonaws.com" : "https://sts.amazonaws.com",
     )
     end
 
     def initialize(
       region : String? = nil,
-      @endpoint : String = region ? "https://sts.#{region}.amazonaws.com" : "https://sts.amazonaws.com"
+      @endpoint : String = region ? "https://sts.#{region}.amazonaws.com" : "https://sts.amazonaws.com",
     )
       @contractor_credential_provider = SimpleCredentials.new("", "")
       @signer = Proc(HTTP::Request, Credentials, HTTP::Request).new do |request, _|
@@ -26,7 +26,7 @@ module Aws::Credentials
       role_arn : String,
       role_session_name : String,
       maybe_duration : Time::Span? = nil,
-      maybe_policy : JSON::Any? = nil
+      maybe_policy : JSON::Any? = nil,
     ) : Credentials
       param = HTTP::Params.build { |form|
         form.add "Version", "2011-06-15"
@@ -70,7 +70,7 @@ module Aws::Credentials
       @role_session_name : String,
       @web_identity_token : String,
       @duration : Time::Span? = nil,
-      @policy : JSON::Any? = nil
+      @policy : JSON::Any? = nil,
     ) : Credentials
       param = HTTP::Params.build { |form|
         form.add "Version", "2011-06-15"

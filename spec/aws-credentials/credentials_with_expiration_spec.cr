@@ -12,13 +12,13 @@ module Aws::Credentials
         session_token: Random::Secure.hex(16),
         expiration: Time.parse_iso8601 "2019-05-21T00:00:00Z"
       )
-      actual = unresolved_or_expired(credentials, ->{ current })
+      actual = unresolved_or_expired(credentials, -> { current })
       actual.should be_false
     end
   end
   it "unresolved" do
     current = Time.parse_iso8601 "2019-05-20T00:00:00Z"
-    actual = unresolved_or_expired(nil, ->{ current })
+    actual = unresolved_or_expired(nil, -> { current })
     actual.should be_true
   end
   it "expired" do
@@ -29,7 +29,7 @@ module Aws::Credentials
       session_token: Random::Secure.hex(16),
       expiration: Time.parse_iso8601 "2019-05-21T00:00:00Z"
     )
-    actual = unresolved_or_expired(credentials, ->{ current })
+    actual = unresolved_or_expired(credentials, -> { current })
     actual.should be_true
   end
 end

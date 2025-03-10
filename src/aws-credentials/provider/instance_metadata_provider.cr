@@ -10,7 +10,7 @@ module Aws::Credentials
 
     def initialize(
       @iam_security_credential_url : String = "http://169.254.169.254/latest/meta-data/iam/security-credentials/",
-      logger : Log = ::Log.for("AWS.Credentials")
+      logger : Log = ::Log.for("AWS.Credentials"),
     )
       @logger = logger.for("InstanceMetadataProvider")
     end

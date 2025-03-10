@@ -10,7 +10,7 @@ module Aws::Credentials
 
     def initialize(
       @container_credential_url : String? = nil,
-      logger : Log = ::Log.for("AWS.Credentials")
+      logger : Log = ::Log.for("AWS.Credentials"),
     )
       @logger = logger.for("ContainerCredentialProvider")
     end
